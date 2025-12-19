@@ -1,3 +1,5 @@
+## 🧱 Architecture
+<img width="1222" height="498" alt="image" src="https://github.com/user-attachments/assets/95715877-6b33-40c2-b36a-62e9dc73ce6d" />
 
 
 # 🚀 Kubernetes Ingress Deployment Project
