@@ -251,6 +251,7 @@ Create the following repositories in **Amazon ECR**:
 ```text
 Repositories created successfully
 ```
+<img width="1558" height="269" alt="image" src="https://github.com/user-attachments/assets/711fb793-ed60-40cf-be02-44cac8638e3b" />
 
 ---
 
