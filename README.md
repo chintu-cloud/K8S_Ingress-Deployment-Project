@@ -37,6 +37,8 @@ This project demonstrates **path-based routing** using **NGINX Ingress Controlle
   * Port 80 (HTTP)
   * Port 443 (HTTPS)
 
+
+
 ---
 
 ## 🖥️ Step 1: Login to EC2
@@ -44,6 +46,13 @@ This project demonstrates **path-based routing** using **NGINX Ingress Controlle
 ```bash
 ssh -i key.pem ec2-user@<EC2-PUBLIC-IP>
 sudo su -
+```
+
+**Output**
+
+```text
+Last login: Fri Dec 19 15:30:21 2025
+[root@ip-172-31-xx-xx ~]#
 ```
 
 ---
@@ -56,12 +65,27 @@ chmod +x kubectl
 mv kubectl /usr/local/bin/kubectl
 ```
 
+**Output**
+
+```text
+kubectl downloaded successfully
+```
+
 ---
 
 ## 🔑 Step 3: Configure AWS CLI
 
 ```bash
 aws configure
+```
+
+**Output**
+
+```text
+AWS Access Key ID [None]: ************
+AWS Secret Access Key [None]: ************
+Default region name [None]: us-east-1
+Default output format [None]:
 ```
 
 ---
@@ -72,12 +96,26 @@ aws configure
 aws eks update-kubeconfig --region us-east-1 --name <CLUSTER-NAME>
 ```
 
+**Output**
+
+```text
+Added new context arn:aws:eks:us-east-1:<ACCOUNT-ID>:cluster/<CLUSTER-NAME>
+```
+
 ---
 
 ## 📦 Step 5: Install Git
 
 ```bash
 yum install git -y
+```
+
+**Output**
+
+```text
+Installed:
+  git.x86_64
+Complete!
 ```
 
 ---
@@ -90,6 +128,13 @@ systemctl start docker
 systemctl enable docker
 ```
 
+**Output**
+
+```text
+Docker installed successfully
+Created symlink from docker.service
+```
+
 ---
 
 ## 📥 Step 7: Clone GitHub Repository
@@ -99,12 +144,27 @@ git clone https://github.com/chintu-cloud/K8S_Ingress-Deployment-Project.git
 cd K8S_Ingress-Deployment-Project
 ```
 
+**Output**
+
+```text
+Cloning into 'K8S_Ingress-Deployment-Project'...
+done.
+```
+
 ---
 
 ## 🌐 Step 8: Install NGINX Ingress Controller
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
+```
+
+**Output**
+
+```text
+namespace/ingress-nginx created
+deployment.apps/ingress-nginx-controller created
+service/ingress-nginx-controller created
 ```
 
 ---
@@ -117,6 +177,15 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 docker build -t main .
 ```
 
+**Output**
+
+```text
+Successfully built <IMAGE-ID>
+Successfully tagged main:latest
+```
+
+---
+
 ### AWS Application
 
 ```bash
@@ -124,6 +193,15 @@ cd aws
 docker build -t aws .
 cd ..
 ```
+
+**Output**
+
+```text
+Successfully built <IMAGE-ID>
+Successfully tagged aws:latest
+```
+
+---
 
 ### Azure Application
 
@@ -133,12 +211,28 @@ docker build -t azure .
 cd ..
 ```
 
+**Output**
+
+```text
+Successfully built <IMAGE-ID>
+Successfully tagged azure:latest
+```
+
+---
+
 ### GCP Application
 
 ```bash
 cd gcp
 docker build -t gcp .
 cd ..
+```
+
+**Output**
+
+```text
+Successfully built <IMAGE-ID>
+Successfully tagged gcp:latest
 ```
 
 ---
@@ -152,12 +246,24 @@ Create the following repositories in **Amazon ECR**:
 * azure
 * gcp
 
+**Output**
+
+```text
+Repositories created successfully
+```
+
 ---
 
 ## 🔐 Step 11: Login to Amazon ECR
 
 ```bash
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com
+```
+
+**Output**
+
+```text
+Login Succeeded
 ```
 
 ---
@@ -171,12 +277,28 @@ docker tag gcp:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/gcp:lates
 docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/gcp:latest
 ```
 
+**Output**
+
+```text
+Pushed: gcp:latest
+```
+
+---
+
 ### Azure
 
 ```bash
 docker tag azure:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/azure:latest
 docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/azure:latest
 ```
+
+**Output**
+
+```text
+Pushed: azure:latest
+```
+
+---
 
 ### AWS
 
@@ -185,6 +307,14 @@ docker tag aws:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/aws:lates
 docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/aws:latest
 ```
 
+**Output**
+
+```text
+Pushed: aws:latest
+```
+
+---
+
 ### Main
 
 ```bash
@@ -192,11 +322,17 @@ docker tag main:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/main:lat
 docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/main:latest
 ```
 
+**Output**
+
+```text
+Pushed: main:latest
+```
+
 ---
 
 ## 📝 Step 13: Update Kubernetes Manifests
 
-Update image URLs in the following files:
+Update image URLs in:
 
 ```text
 k8s-files/aws.yml
@@ -209,6 +345,12 @@ k8s-files/main.yml
 image: <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/<IMAGE-NAME>:latest
 ```
 
+**Output**
+
+```text
+Manifests updated successfully
+```
+
 ---
 
 ## 🔄 Step 14: Pull Latest Changes
@@ -217,7 +359,17 @@ image: <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/<IMAGE-NAME>:latest
 git pull
 ```
 
+**Output**
+
+```text
+Updating files...
+Fast-forward
+```
+
 ---
+
+
+
 
 ## ☸️ Step 15: Deploy to Kubernetes
 
@@ -240,8 +392,19 @@ kubectl get ingress
 
 ```text
 http://<LOADBALANCER-DNS>/
+```
+-
+<img width="1920" height="1080" alt="Screenshot (512)" src="https://github.com/user-attachments/assets/94185ced-2e18-47e4-a5b4-e68f252bebce" />
+---
+```text
+http://<LOADBALANCER-DNS>/aws
+http://<LOADBALANCER-DNS>/azure
+http://<LOADBALANCER-DNS>/gcp
 
 ```
+<img width="1920" height="1080" alt="Screenshot (513)" src="https://github.com/user-attachments/assets/7d87e3cd-69ae-47f1-a8e6-62515c054d21" />
+<img width="1920" height="1080" alt="Screenshot (514)" src="https://github.com/user-attachments/assets/8f8e3218-6706-4a79-a375-251e16b30c3a" />
+<img width="1920" height="1080" alt="Screenshot (515)" src="https://github.com/user-attachments/assets/30906816-86c2-47b3-aec6-2a289f885261" />
 
 ---
 
@@ -265,6 +428,7 @@ http://<LOADBALANCER-DNS>/
 5. Click **Create Record**
 
 ---
+<img width="1533" height="626" alt="Screenshot (516)" src="https://github.com/user-attachments/assets/44bdac2c-9163-432d-ab3d-eee23c7253f2" />
 
 ## 🌍 Step 19: Access Application Using Domain
 
@@ -274,6 +438,7 @@ Open a browser and access:
 http://chintu.shop
 
 ```
+<img width="1920" height="1080" alt="Screenshot (517)" src="https://github.com/user-attachments/assets/ee4c9c35-41fb-49ac-9b25-11b516888656" />
 
 ---
 
@@ -464,6 +629,7 @@ Repo URL: https://github.com/chintu-cloud/K8S_Ingress-Deployment-Project.git
 Revision: HEAD
 Path: k8s-files
 ```
+<img width="1427" height="407" alt="Screenshot 2025-12-19 215824" src="https://github.com/user-attachments/assets/cdf15c81-86b0-4c1b-97cf-a8b6a6b61072" />
 
 ### 🔹 Destination
 
@@ -471,12 +637,16 @@ Path: k8s-files
 Cluster: https://kubernetes.default.svc
 Namespace: default
 ```
+<img width="1434" height="371" alt="Screenshot 2025-12-19 215914" src="https://github.com/user-attachments/assets/da4a8018-e2e7-410b-9caa-4f8baf4e8f60" />
 
 Click **Create**
 
 ---
 
 ## 🏁 Total Applications
+<img width="1920" height="1080" alt="Screenshot (518)" src="https://github.com/user-attachments/assets/8530fed8-472b-48b4-acfe-9188cb4d54ae" />
+<img width="1915" height="952" alt="Screenshot 2025-12-19 220035" src="https://github.com/user-attachments/assets/103df537-5f6d-42c8-b7ca-4abfc9eba534" />
+<img width="1910" height="933" alt="Screenshot 2025-12-19 220103" src="https://github.com/user-attachments/assets/f1bafdf8-d34b-4e69-bba5-f8db89ee6342" />
 
 
 
