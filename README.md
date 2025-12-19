@@ -527,7 +527,7 @@ kubectl get svc -n argocd
 **Output**
 
 ```text
-argocd-server   NodePort   10.100.101.35   80:30829/TCP,443:30915/TCP
+argocd-server   NodePort   10.100.101.35   80:30586/TCP,443:30915/TCP
 ```
 
 ---
