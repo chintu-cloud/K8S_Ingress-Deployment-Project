@@ -394,9 +394,9 @@ kubectl get ingress
 ```text
 http://<LOADBALANCER-DNS>/
 ```
--
+
 <img width="1920" height="1080" alt="Screenshot (512)" src="https://github.com/user-attachments/assets/94185ced-2e18-47e4-a5b4-e68f252bebce" />
----
+
 ```text
 http://<LOADBALANCER-DNS>/aws
 http://<LOADBALANCER-DNS>/azure
