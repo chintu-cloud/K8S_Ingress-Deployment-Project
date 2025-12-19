@@ -385,11 +385,11 @@ ip-172-31-16-18.ec2.internal   Ready   54.147.131.253
 Open browser:
 
 ```text
-http://54.147.131.253:30829
+http://54.147.131.253:30586
 ```
 
 ➡ **Advanced → Continue (unsafe)**
-<img width="1602" height="839" alt="Screenshot 2025-12-18 140835" src="https://github.com/user-attachments/assets/7fc940bb-d1a4-4531-ada2-262381c99204" />
+
 
 ---
 
@@ -425,7 +425,7 @@ DzvV96tFKIUqPct-
 | Field    | Value              |
 | -------- | ------------------ |
 | Username | `admin`            |
-| Password | `DzvV96tFKIUqPct-` |
+| Password | `4U6LqCxkwlVT2UvN` |
 
 ---
 <img width="1910" height="958" alt="Screenshot 2025-12-18 140949" src="https://github.com/user-attachments/assets/b50e6a2f-ba31-4157-8d75-3f1d18b6476e" />
