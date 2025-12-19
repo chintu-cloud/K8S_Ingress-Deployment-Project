@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: azure
-          image: 087843402235.dkr.ecr.us-east-1.amazonaws.com/ingress/azure:latest
+          image: 087843402235.dkr.ecr.us-east-1.amazonaws.com/azure
           imagePullPolicy: Always
           ports:
             - containerPort: 80
