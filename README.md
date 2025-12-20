@@ -170,7 +170,7 @@ aws eks update-kubeconfig --region us-east-1 --name cloud
 Added new context arn:aws:eks:us-east-1:xxxx:cluster/cloud
 ```
 
-## 🔹 Step : get nodes
+## 🔹 Step 4 : get nodes
 
 ```bash
 kubectl get nodes
@@ -186,33 +186,168 @@ ip-172-31-5-50.ec2.internal      Ready    3m    v1.34.x
 
 ---
 
-## 🔹 Step 5: Install Git & Docker
+## 🔹 Step 6: Install Git & Docker
+
+## 🔹 Step 6.1: Install Git
+
+📌 Git is used to clone the project repository from GitHub.
 
 ```bash
 yum install git -y
+```
+
+### ✅ Output
+
+```
+Installed:
+  git-2.xx.x.x86_64
+Complete!
+```
+
+✔ Git installed successfully
+
+🔍 Verify:
+
+```bash
+git --version
+```
+
+Output:
+
+```
+git version 2.xx.x
+```
+
+---
+
+## 🔹 Step 6.2: Install Docker
+
+📌 Docker is used to build container images for Kubernetes.
+
+```bash
 yum install docker -y
+```
+
+### ✅ Output
+
+```
+Installed:
+  docker-25.xx.x
+Complete!
+```
+
+✔ Docker package installed
+
+🔍 Verify installation:
+
+```bash
+docker --version
+```
+
+Output:
+
+```
+Docker version 25.xx.x, build xxxx
+```
+
+---
+
+## 🔹 Step 6.3: Start Docker Service
+
+📌 Docker daemon must be running to build and push images.
+
+```bash
 systemctl start docker
+```
+
+✔ Docker service started
+
+(Optional but recommended – enable Docker on boot)
+
+```bash
+systemctl enable docker
+```
+
+---
+
+## 🔹 Step 6.4: Check Docker Service Status
+
+📌 Confirm Docker is running correctly.
+
+```bash
 systemctl status docker
 ```
 
 ### ✅ Output
 
 ```
-Active: active (running)
+● docker.service - Docker Application Container Engine
+   Active: active (running)
 ```
+
+✔ Docker is running successfully
 
 ---
 
-## 🔹 Step 6: Clone GitHub Repository
+
+## 🔹 Step 7: Clone GitHub Repository
+
+## 🔹 Step 7.1: Clone the GitHub Repository
+
+📌 This command copies the complete project from GitHub to your local machine.
 
 ```bash
 git clone https://github.com/chintu-cloud/K8S_Ingress-Deployment-Project.git
+```
+
+### ✅ Output
+
+```
+Cloning into 'K8S_Ingress-Deployment-Project'...
+remote: Enumerating objects: 90, done.
+remote: Counting objects: 100% (90/90), done.
+remote: Compressing objects: 100% (86/86), done.
+Receiving objects: 100% (90/90), done.
+Resolving deltas: 100% (41/41), done.
+```
+
+✔ Repository cloned successfully
+
+📁 A new folder named **`K8S_Ingress-Deployment-Project`** is created.
+
+---
+
+## 🔹 Step 7.2: Move Into Project Directory
+
+📌 Navigate inside the cloned repository to access project files.
+
+```bash
 cd K8S_Ingress-Deployment-Project
+```
+
+✔ You are now inside the project directory
+
+🔍 Verify:
+
+```bash
+ls
+```
+
+### ✅ Output
+
+```
+Dockerfile
+Monolithic
+aws
+azure
+gcp
+index.html
+k8s-files
 ```
 
 ---
 
-## 🔹 Step 7: Install NGINX Ingress Controller
+## 🔹 Step 8: Install NGINX Ingress Controller
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
@@ -228,27 +363,126 @@ ingressclass.networking.k8s.io/nginx created
 
 ---
 
-## 🔹 Step 8: Build Docker Images
+## 🔹 Step 9: Build Docker Images
+
+## 🔹 Step 9.1: Build Main Application Image
+
+📍 **Location:** Project root directory
 
 ```bash
+cd K8S_Ingress-Deployment-Project
 docker build -t main .
-cd aws && docker build -t aws . && cd ..
-cd azure && docker build -t azure . && cd ..
-cd gcp && docker build -t gcp . && cd ..
 ```
 
 ### ✅ Output
 
 ```
-Successfully tagged main:latest
-Successfully tagged aws:latest
-Successfully tagged azure:latest
-Successfully tagged gcp:latest
+[+] Building 2.0s
+ => naming to docker.io/library/main
+```
+
+✔ Image `main:latest` created successfully
+
+---
+
+## 🔹 Step 9.2: Build AWS Application Image
+
+📍 **Move to aws directory**
+
+```bash
+cd aws
+docker build -t aws .
+```
+
+### ✅ Output
+
+```
+[+] Building 0.3s
+ => naming to docker.io/library/aws
+```
+
+✔ Image `aws:latest` created successfully
+
+📍 **Go back to root directory**
+
+```bash
+cd ..
 ```
 
 ---
 
-## 🔹 Step 9: Create AWS ECR Repositories
+## 🔹 Step 9.3: Build Azure Application Image
+
+📍 **Move to azure directory**
+
+```bash
+cd azure
+docker build -t azure .
+```
+
+### ✅ Output
+
+```
+[+] Building 0.3s
+ => naming to docker.io/library/azure
+```
+
+✔ Image `azure:latest` created successfully
+
+📍 **Go back to root directory**
+
+```bash
+cd ..
+```
+
+---
+
+## 🔹 Step 9.4: Build GCP Application Image
+
+📍 **Move to gcp directory**
+
+```bash
+cd gcp
+docker build -t gcp .
+```
+
+### ✅ Output
+
+```
+[+] Building 0.3s
+ => naming to docker.io/library/gcp
+```
+
+✔ Image `gcp:latest` created successfully
+
+📍 **Return to root directory**
+
+```bash
+cd ..
+```
+
+---
+
+## 🔍 Step 5: Verify Docker Images
+
+```bash
+docker images
+```
+
+### ✅ Output
+
+```
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+main         latest    af4c45efb7bb    1 min ago      23MB
+aws          latest    abf93e07cfdb    1 min ago      23MB
+azure        latest    c5d0b98fc49b    1 min ago      23MB
+gcp          latest    25bfaab44be8    1 min ago      23MB
+```
+
+---
+
+
+## 🔹 Step 10: Create AWS ECR Repositories
 
 Create **4 repositories** in AWS ECR:
 
@@ -260,7 +494,7 @@ Create **4 repositories** in AWS ECR:
 ---
 <img width="1558" height="269" alt="image" src="https://github.com/user-attachments/assets/711fb793-ed60-40cf-be02-44cac8638e3b" />
 
-## 🔹 Step 10: Login to AWS ECR
+## 🔹 Step 11: Login to AWS ECR
 
 ```bash
 aws ecr get-login-password --region us-east-1 \
@@ -275,7 +509,7 @@ Login Succeeded
 
 ---
 
-## 🔹 Step 11: Push Images to ECR
+## 🔹 Step 12: Push Images to ECR
 
 ```bash
 docker tag main:latest <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/main:latest
@@ -292,7 +526,7 @@ latest: digest: sha256:xxxx size: 2197
 
 ---
 
-## 🔹 Step 12: Update Kubernetes YAML Files
+## 🔹 Step 13: Update Kubernetes YAML Files
 
 Update image paths in:
 
@@ -309,7 +543,7 @@ image: <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/aws:latest
 
 ---
 
-## 🔹 Step 13: Pull Latest Changes
+## 🔹 Step 14: Pull Latest Changes
 
 ```bash
 git pull
