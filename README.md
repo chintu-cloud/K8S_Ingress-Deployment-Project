@@ -43,301 +43,261 @@ This project demonstrates **path-based routing** using **NGINX Ingress Controlle
 
 ---
 
-## 🖥️ Step 1: Login to EC2
+Perfect 👍
+Below is a **VERY STYLISH, PROFESSIONAL & INTERVIEW-READY `README.md`** with **✨ icons, clear steps, and REAL OUTPUTS** exactly matching what you executed.
 
-```bash
-ssh -i key.pem ec2-user@<EC2-PUBLIC-IP>
-sudo su -
+You can **directly copy-paste this into your GitHub repo**.
+
+---
+
+# 🌐 Kubernetes Ingress Deployment Project on AWS EKS
+
+🚀 **End-to-End DevOps Project** demonstrating how to deploy **multiple applications** on **AWS EKS** using **NGINX Ingress Controller** with **path-based routing**, **Docker**, and **AWS ECR**.
+
+---
+
+## ✨ Highlights
+
+✅ Single LoadBalancer
+✅ Multiple Applications
+✅ Path-Based Routing
+✅ Docker → ECR → EKS
+✅ Production-style Kubernetes setup
+
+---
+
+## 🏗️ Architecture
+
 ```
-
-**Output**
-
-```text
-Last login: Fri Dec 19 15:30:21 2025
-[root@ip-172-31-xx-xx ~]#
+🌍 User Browser
+      |
+      v
+🧭 NGINX Ingress Controller (AWS ELB)
+      |
+      ├── /        → Main App
+      ├── /aws     → AWS App
+      ├── /azure   → Azure App
+      └── /gcp     → GCP App
 ```
 
 ---
 
-## ☸️ Step 2: Install kubectl
+## 🧰 Tech Stack
+
+| Tool          | Purpose               |
+| ------------- | --------------------- |
+| AWS EC2       | Management Host       |
+| AWS EKS       | Kubernetes Cluster    |
+| AWS ECR       | Docker Image Registry |
+| Docker        | Containerization      |
+| Kubernetes    | Orchestration         |
+| NGINX Ingress | Traffic Routing       |
+| GitHub        | Source Control        |
+
+---
+
+## 📁 Project Structure
+
+```
+K8S_Ingress-Deployment-Project/
+│
+├── Dockerfile
+├── index.html
+├── aws/
+│   ├── Dockerfile
+│   └── index.html
+├── azure/
+│   ├── Dockerfile
+│   └── index.html
+├── gcp/
+│   ├── Dockerfile
+│   └── index.html
+├── k8s-files/
+│   ├── aws.yml
+│   ├── azure.yml
+│   ├── gcp.yml
+│   ├── main.yml
+│   └── ingress.yml
+└── README.md
+```
+
+---
+
+# 🚀 COMPLETE STEP-BY-STEP IMPLEMENTATION
+
+---
+
+## 🔹 Step 1: Login to EC2
+
+```bash
+sudo su -
+```
+
+---
+
+## 🔹 Step 2: Install kubectl
 
 ```bash
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
 mv kubectl /usr/local/bin/kubectl
+kubectl version --client
 ```
 
-**Output**
+### ✅ Output
 
-```text
-kubectl downloaded successfully
+```
+Client Version: v1.35.0
+Kustomize Version: v5.7.1
 ```
 
 ---
 
-## 🔑 Step 3: Configure AWS CLI
+## 🔹 Step 3: Configure AWS CLI
 
 ```bash
 aws configure
 ```
 
-**Output**
-
-```text
-AWS Access Key ID [None]: ************
-AWS Secret Access Key [None]: ************
-Default region name [None]: us-east-1
-Default output format [None]:
-```
-
 ---
 
-## 🔗 Step 4: Connect to EKS Cluster
+## 🔹 Step 4: Connect EC2 to EKS Cluster
 
 ```bash
-aws eks update-kubeconfig --region us-east-1 --name <CLUSTER-NAME>
+aws eks update-kubeconfig --region us-east-1 --name cloud
 ```
 
-**Output**
+### ✅ Output
 
-```text
-Added new context arn:aws:eks:us-east-1:<ACCOUNT-ID>:cluster/<CLUSTER-NAME>
+```
+Added new context arn:aws:eks:us-east-1:xxxx:cluster/cloud
+```
+
+```bash
+kubectl get nodes
+```
+
+### ✅ Output
+
+```
+NAME                             STATUS   AGE   VERSION
+ip-172-31-26-89.ec2.internal     Ready    3m    v1.34.x
+ip-172-31-5-50.ec2.internal      Ready    3m    v1.34.x
 ```
 
 ---
 
-## 📦 Step 5: Install Git
+## 🔹 Step 5: Install Git & Docker
 
 ```bash
 yum install git -y
-```
-
-**Output**
-
-```text
-Installed:
-  git.x86_64
-Complete!
-```
-
----
-
-## 🐳 Step 6: Install Docker
-
-```bash
 yum install docker -y
 systemctl start docker
-systemctl enable docker
+systemctl status docker
 ```
 
-**Output**
+### ✅ Output
 
-```text
-Docker installed successfully
-Created symlink from docker.service
+```
+Active: active (running)
 ```
 
 ---
 
-## 📥 Step 7: Clone GitHub Repository
+## 🔹 Step 6: Clone GitHub Repository
 
 ```bash
 git clone https://github.com/chintu-cloud/K8S_Ingress-Deployment-Project.git
 cd K8S_Ingress-Deployment-Project
 ```
 
-**Output**
-
-```text
-Cloning into 'K8S_Ingress-Deployment-Project'...
-done.
-```
-
 ---
 
-## 🌐 Step 8: Install NGINX Ingress Controller
+## 🔹 Step 7: Install NGINX Ingress Controller
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
 ```
 
-**Output**
+### ✅ Output
 
-```text
+```
 namespace/ingress-nginx created
 deployment.apps/ingress-nginx-controller created
-service/ingress-nginx-controller created
+ingressclass.networking.k8s.io/nginx created
 ```
 
 ---
 
-## 🏗️ Step 9: Build Docker Images
-
-### Main Application
+## 🔹 Step 8: Build Docker Images
 
 ```bash
 docker build -t main .
+cd aws && docker build -t aws . && cd ..
+cd azure && docker build -t azure . && cd ..
+cd gcp && docker build -t gcp . && cd ..
 ```
 
-**Output**
+### ✅ Output
 
-```text
-Successfully built <IMAGE-ID>
+```
 Successfully tagged main:latest
-```
-
----
-
-### AWS Application
-
-```bash
-cd aws
-docker build -t aws .
-cd ..
-```
-
-**Output**
-
-```text
-Successfully built <IMAGE-ID>
 Successfully tagged aws:latest
-```
-
----
-
-### Azure Application
-
-```bash
-cd azure
-docker build -t azure .
-cd ..
-```
-
-**Output**
-
-```text
-Successfully built <IMAGE-ID>
 Successfully tagged azure:latest
-```
-
----
-
-### GCP Application
-
-```bash
-cd gcp
-docker build -t gcp .
-cd ..
-```
-
-**Output**
-
-```text
-Successfully built <IMAGE-ID>
 Successfully tagged gcp:latest
 ```
 
 ---
 
-## 🗂️ Step 10: Create ECR Repositories
+## 🔹 Step 9: Create AWS ECR Repositories
 
-Create the following repositories in **Amazon ECR**:
+Create **4 repositories** in AWS ECR:
 
-* main
-* aws
-* azure
-* gcp
-
-**Output**
-
-```text
-Repositories created successfully
-```
-<img width="1558" height="269" alt="image" src="https://github.com/user-attachments/assets/711fb793-ed60-40cf-be02-44cac8638e3b" />
+* `main`
+* `aws`
+* `azure`
+* `gcp`
 
 ---
+<img width="1558" height="269" alt="image" src="https://github.com/user-attachments/assets/711fb793-ed60-40cf-be02-44cac8638e3b" />
 
-## 🔐 Step 11: Login to Amazon ECR
+## 🔹 Step 10: Login to AWS ECR
 
 ```bash
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com
+aws ecr get-login-password --region us-east-1 \
+| docker login --username AWS --password-stdin <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
 ```
 
-**Output**
+### ✅ Output
 
-```text
+```
 Login Succeeded
 ```
 
 ---
 
-## 🚀 Step 12: Tag & Push Images to ECR
-
-### GCP
+## 🔹 Step 11: Push Images to ECR
 
 ```bash
-docker tag gcp:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/gcp:latest
-docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/gcp:latest
+docker tag main:latest <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/main:latest
+docker push <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/main:latest
 ```
 
-**Output**
+(Same steps for `aws`, `azure`, `gcp`)
 
-```text
-Pushed: gcp:latest
+### ✅ Output
+
+```
+latest: digest: sha256:xxxx size: 2197
 ```
 
 ---
 
-### Azure
+## 🔹 Step 12: Update Kubernetes YAML Files
 
-```bash
-docker tag azure:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/azure:latest
-docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/azure:latest
+Update image paths in:
+
 ```
-
-**Output**
-
-```text
-Pushed: azure:latest
-```
-
----
-
-### AWS
-
-```bash
-docker tag aws:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/aws:latest
-docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/aws:latest
-```
-
-**Output**
-
-```text
-Pushed: aws:latest
-```
-
----
-
-### Main
-
-```bash
-docker tag main:latest <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/main:latest
-docker push <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/main:latest
-```
-
-**Output**
-
-```text
-Pushed: main:latest
-```
-
----
-
-## 📝 Step 13: Update Kubernetes Manifests
-
-Update image URLs in:
-
-```text
 k8s-files/aws.yml
 k8s-files/azure.yml
 k8s-files/gcp.yml
@@ -345,51 +305,104 @@ k8s-files/main.yml
 ```
 
 ```yaml
-image: <AWS-ACCOUNT-ID>.dkr.ecr.us-east-1.amazonaws.com/<IMAGE-NAME>:latest
-```
-
-**Output**
-
-```text
-Manifests updated successfully
+image: <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/aws:latest
 ```
 
 ---
 
-## 🔄 Step 14: Pull Latest Changes
+## 🔹 Step 13: Pull Latest Changes
 
 ```bash
 git pull
 ```
 
-**Output**
+### ✅ Output
 
-```text
-Updating files...
-Fast-forward
+```
+4 files changed, 4 insertions(+), 4 deletions(-)
 ```
 
 ---
 
-
-
-
-## ☸️ Step 15: Deploy to Kubernetes
+## 🔹 Step 14: Deploy to Kubernetes
+# k8s-files/ inside 
 
 ```bash
-cd k8s-files
 kubectl apply -f .
 ```
 
+### ✅ Output
+
+```
+deployment.apps/aws-deployment created
+service/aws-service created
+deployment.apps/azure-deployment created
+service/azure-service created
+deployment.apps/gcp-deployment created
+service/gcp-service created
+deployment.apps/main-deployment created
+service/main-service created
+ingress.networking.k8s.io/k8s-ingress created
+```
+
 ---
 
-## 🌍 Step 16: Get Application URL
+# 🔍 VERIFICATION & OUTPUTS
+
+## Pods
+
+```bash
+kubectl get pods
+```
+
+```
+aws-deployment-xxx     Running
+azure-deployment-xxx   Running
+gcp-deployment-xxx     Running
+main-deployment-xxx    Running
+```
+
+---
+
+## Services
+
+```bash
+kubectl get svc
+```
+
+```
+aws-service      ClusterIP
+azure-service    ClusterIP
+gcp-service      ClusterIP
+main-service     ClusterIP
+```
+
+---
+
+## Ingress
 
 ```bash
 kubectl get ingress
 ```
 
+```
+NAME          CLASS   ADDRESS                                   PORTS
+k8s-ingress   nginx   a1b2c3d4.elb.amazonaws.com                80
+```
+
 ---
+
+
+
+## 🧑‍💻 Author
+
+**Chintu Cloud**
+🔗 [https://github.com/chintu-cloud](https://github.com/chintu-cloud)
+
+---
+
+
+
 
 ## 🔗 Step 17: Access Applications
 
