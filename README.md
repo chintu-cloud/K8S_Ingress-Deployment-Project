@@ -43,18 +43,7 @@ This project demonstrates **path-based routing** using **NGINX Ingress Controlle
 
 ---
 
-Perfect 👍
-Below is a **VERY STYLISH, PROFESSIONAL & INTERVIEW-READY `README.md`** with **✨ icons, clear steps, and REAL OUTPUTS** exactly matching what you executed.
 
-You can **directly copy-paste this into your GitHub repo**.
-
----
-
-# 🌐 Kubernetes Ingress Deployment Project on AWS EKS
-
-🚀 **End-to-End DevOps Project** demonstrating how to deploy **multiple applications** on **AWS EKS** using **NGINX Ingress Controller** with **path-based routing**, **Docker**, and **AWS ECR**.
-
----
 
 ## ✨ Highlights
 
