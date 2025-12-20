@@ -170,6 +170,8 @@ aws eks update-kubeconfig --region us-east-1 --name cloud
 Added new context arn:aws:eks:us-east-1:xxxx:cluster/cloud
 ```
 
+## 🔹 Step : get nodes
+
 ```bash
 kubectl get nodes
 ```
