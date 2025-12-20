@@ -48,9 +48,13 @@ This project demonstrates **path-based routing** using **NGINX Ingress Controlle
 ## ✨ Highlights
 
 ✅ Single LoadBalancer
+
 ✅ Multiple Applications
+
 ✅ Path-Based Routing
+
 ✅ Docker → ECR → EKS
+
 ✅ Production-style Kubernetes setup
 
 ---
