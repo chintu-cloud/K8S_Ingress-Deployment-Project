@@ -148,6 +148,14 @@ Kustomize Version: v5.7.1
 aws configure
 ```
 
+**Output**
+
+```text
+AWS Access Key ID [None]: ************
+AWS Secret Access Key [None]: ************
+Default region name [None]: us-east-1
+Default output format [None]:
+```
 ---
 
 ## 🔹 Step 4: Connect EC2 to EKS Cluster
